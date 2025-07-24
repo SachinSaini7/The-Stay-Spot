@@ -44,11 +44,10 @@ main()
 async function main(){
   await mongoose.connect(dbUrl);
 }
-const store= MongoStore.create({
-  mongoUrl:dbUrl,
-  crypto:{
-    secret:process.env.SECRET,
-  },
+const store = MongoStore.create({
+  client: mongoose.connection.getClient(),
+  crypto: {
+     secret: process.env.SECRET },
   touchAfter: 24*3600,
 });
 
@@ -63,7 +62,7 @@ const sessionOptions={
   saveUninitialized:true,
   cookie:{
     expires:Date.now()+7*24*60*60*1000,
-    magAge:7*24*60*60*1000,
+    maxAge:7*24*60*60*1000,
     httpOnly:true,
   }
 }
